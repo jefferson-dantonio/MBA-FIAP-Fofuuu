@@ -1,3 +1,6 @@
+#import AttendanceMonitoring, UserPerformanceByGame from 'user.graphql'
+
 type Query {
-    test(param: String): String
+    getAttendanceMonitoring: [AttendanceMonitoring]
+    getUserPerformanceByGame: [UserPerformanceByGame]
 } 

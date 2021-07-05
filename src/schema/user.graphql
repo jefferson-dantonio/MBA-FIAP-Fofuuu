@@ -1,0 +1,14 @@
+type AttendanceMonitoring {
+    UserId: String
+    EventName: String
+    Year: Int
+    Month: Int
+    DAY: Int
+    AcompPresenca: Int
+}
+
+type UserPerformanceByGame {
+    UserId: String
+    ModuleId: String
+    TotalScore: Int
+} 

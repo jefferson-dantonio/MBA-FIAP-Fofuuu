@@ -4,20 +4,13 @@ const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
 const { addResolversToSchema } = require('@graphql-tools/schema');
 const { graphqlHTTP } = require('express-graphql');
 const { join } = require('path');
+const resolvers = require('./resolvers')
 
-const schema = loadSchemaSync(join(__dirname, 'schema/schema.graphql'), {
+const schema = loadSchemaSync(join(__dirname, 'schema/index.graphql'), {
     loaders: [
       new GraphQLFileLoader(),
     ]
-  });
-
-const resolvers = {
-    Query: {
-        test(_, args) {
-            return args.param
-        }
-    }
-}
+});
 
 const schemaWithResolvers = addResolversToSchema({
     schema,
