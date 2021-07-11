@@ -1,11 +1,16 @@
 const db = require('../db')
-const { 
-    getAttendanceMonitoringQuery,
-} = require('./queries')
 
-const getAttendanceMonitoring = async (userId) => {
+const getAttendanceMonitoring = async () => {
     try {
-        const res = await db.raw(getAttendanceMonitoringQuery)
+        const res = await db('DailyUserEvents').select(
+            'UserId',
+            'EventName',
+            'Year',
+            'Month',
+            'DAY'
+            ).count('*', { as: 'AcompPresenca'})
+            .groupBy('UserId', 'EventName', 'Year', 'Month', 'DAY')
+            .orderBy('UserId', 'Year', 'Month', 'DAY')
 
         return res ? res : null
     }
