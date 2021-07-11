@@ -18,3 +18,9 @@ type numberMovesByStudent {
     ModuleId: String
     NumberOfMoves: Int
 } 
+
+type hitsByGame {
+    UserId: String
+    ActivityId: String
+    Hits: Int
+} 
