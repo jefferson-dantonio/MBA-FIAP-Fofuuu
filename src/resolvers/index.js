@@ -35,6 +35,25 @@ const getUserPerformanceByGame = async () => {
     }
 }
 
+const getNumberMovesByStudent = async () => {
+        try {
+            const res = await db('DailyActivityResults').select(
+                'UserId',
+                'ModuleId',
+                ).count('*', { as: 'NumberOfMoves'})
+                .groupBy('UserId', 'ModuleId')
+                .orderBy('NumberOfMoves', 'desc')
+    
+            return res ? res : null
+        }
+        catch(err) {
+            console.log('ERRO:', err)
+        }
+    }
+
+    
+
+
 module.exports = {
     Query: {
         async getAttendanceMonitoring(_, args) {
@@ -44,6 +63,13 @@ module.exports = {
         async getUserPerformanceByGame(_, args) {
             const userPerformanceByGame = await getUserPerformanceByGame();
             return userPerformanceByGame
-        }
+        },
+
+        async getNumberMovesByStudent(_, args) {
+            const numberMovesByStudent = await getNumberMovesByStudent();
+            return numberMovesByStudent
+        },
+
+    
     }
 }

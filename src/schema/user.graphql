@@ -12,3 +12,9 @@ type UserPerformanceByGame {
     ModuleId: String
     TotalScore: Int
 } 
+
+type numberMovesByStudent {
+    UserId: String
+    ModuleId: String
+    NumberOfMoves: Int
+} 
