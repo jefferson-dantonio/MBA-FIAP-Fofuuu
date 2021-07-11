@@ -6,4 +6,5 @@ type Query {
     getNumberMovesByStudent: [numberMovesByStudent]
     getHitsByGame: [hitsByGame]
     getStudentPerformanceByGame: [studentPerformanceByGame]
+    getHitsByGameByStudent(userId: String): [hitsByGame]
 } 

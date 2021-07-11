@@ -83,6 +83,23 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
+    const getHitsByGameByStudent = async (userId) => {
+        try {
+            const res = await db('ActivityResults').select(
+                'UserId',
+                'ActivityId',
+                ).sum({Hits: 'Score'})
+                .where('UserId', userId)
+                .groupBy('UserId', 'ActivityId')
+                .orderBy('Hits', 'desc')
+    
+            return res ? res : null
+        }
+        catch(err) {
+            console.log('ERRO:', err)
+        }
+    }
+
     
 
 
@@ -110,6 +127,12 @@ module.exports = {
         async getStudentPerformanceByGame(_, args) {
             const studentPerformanceByGame = await getStudentPerformanceByGame();
             return studentPerformanceByGame
+        },
+
+        async getHitsByGameByStudent(_, args) {
+            const { userId } = args
+            const HitsByGameByStudent = await getHitsByGameByStudent(userId);
+            return HitsByGameByStudent
         },
 
     
