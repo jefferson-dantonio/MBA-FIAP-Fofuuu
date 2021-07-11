@@ -1,12 +1,12 @@
 const db = require('../db')
 const { 
     getAttendanceMonitoringQuery,
-    getUserPerformanceByGameQuery,
 } = require('./queries')
 
-const getAttendanceMonitoring = async () => {
+const getAttendanceMonitoring = async (userId) => {
     try {
         const res = await db.raw(getAttendanceMonitoringQuery)
+
         return res ? res : null
     }
     catch(err) {
@@ -16,7 +16,13 @@ const getAttendanceMonitoring = async () => {
 
 const getUserPerformanceByGame = async () => {
     try {
-        const res = await db.raw(getUserPerformanceByGameQuery)
+        const res = await db('[MonthlyActivityResults]').select(
+        'UserId',
+	    'ModuleId',
+	    ).sum({TotalScore: 'TotalScore'})
+        .groupBy('UserId', 'ModuleId')
+        .orderBy('TotalScore', 'desc')
+
         return res ? res : null
     }
     catch(err) {
