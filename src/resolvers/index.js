@@ -67,6 +67,22 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
+    const getStudentPerformanceByGame = async () => {
+        try {
+            const res = await db('ActivityResults').select(
+                'ProfileId',
+                'ModuleId',
+                ).sum({TotalTime: 'TotalTime'})
+                .groupBy('ProfileId','ModuleId')
+                .orderBy('ProfileId', 'desc')
+    
+            return res ? res : null
+        }
+        catch(err) {
+            console.log('ERRO:', err)
+        }
+    }
+
     
 
 
@@ -89,6 +105,11 @@ module.exports = {
         async getHitsByGame(_, args) {
             const hitsByGame = await getHitsByGame();
             return hitsByGame
+        },
+
+        async getStudentPerformanceByGame(_, args) {
+            const studentPerformanceByGame = await getStudentPerformanceByGame();
+            return studentPerformanceByGame
         },
 
     

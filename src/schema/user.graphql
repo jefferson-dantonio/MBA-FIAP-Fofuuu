@@ -24,3 +24,9 @@ type hitsByGame {
     ActivityId: String
     Hits: Int
 } 
+
+type studentPerformanceByGame {
+    ProfileId: String
+    ModuleId: String
+    TotalTime: Int
+}
