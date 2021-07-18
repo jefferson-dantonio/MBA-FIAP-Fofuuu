@@ -136,6 +136,26 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
+    const getProfilesById = async (userId) => {
+        try {
+            const res = await db('ActivityResults').select(
+                'ProfileId',
+                'FirstName',
+                'LastName'
+                )
+                .where({
+                    "UserId": userId,
+                    'IsRevoked': False
+                })
+                
+
+            return res ? res : null
+        }
+        catch(err) {
+            console.log('ERRO:', err)
+        }
+    }
+
     
 
 
@@ -172,16 +192,24 @@ module.exports = {
             return scoreByGameByStudent
         },
 
+        // Bar Chart
         async getStudentPerformanceByGameByStudent(_, args) {
             const { profileId } = args
             const studentPerformanceByGameByStudent = await getStudentPerformanceByGameByStudent(profileId);
             return studentPerformanceByGameByStudent
         },
 
+        // Bar Chart
         async getErrorCountByGameByStudent(_, args) {
             const { profileId } = args
             const errorCountByGameByStudent = await getErrorCountByGameByStudent(profileId);
             return  errorCountByGameByStudent
+        },
+
+        async getProfilesById(_, args) {
+            const {userId } = args
+            const profilesById = await getProfilesById(userId);
+            return  profilesById
         },
 
     

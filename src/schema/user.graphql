@@ -42,3 +42,9 @@ type errorCountByGame {
     ModuleId: String
     TotalErrors: Int
 }
+
+type profilesById {
+    ProfileId: String
+    FirstName: String
+    LastName: String
+}
