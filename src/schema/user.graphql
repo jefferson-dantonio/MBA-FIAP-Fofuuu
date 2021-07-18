@@ -30,3 +30,9 @@ type studentPerformanceByGame {
     ModuleId: String
     TotalTime: Int
 }
+
+type scoreByGame {
+    ProfileId: String
+    ModuleId: String
+    Score: Int
+}

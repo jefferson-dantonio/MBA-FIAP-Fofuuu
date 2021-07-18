@@ -83,15 +83,17 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
-    const getHitsByGameByStudent = async (userId) => {
+    // Queries by student
+
+    const getScoreByGameByStudent = async (profileId) => {
         try {
             const res = await db('ActivityResults').select(
-                'UserId',
-                'ActivityId',
-                ).sum({Hits: 'Score'})
-                .where('UserId', userId)
-                .groupBy('UserId', 'ActivityId')
-                .orderBy('Hits', 'desc')
+                'ProfileId',
+                'ModuleId',
+                ).sum({Score: 'Score'})
+                .where('ProfileId', profileId)
+                .groupBy('ProfileId', 'ModuleId')
+                .orderBy('Score', 'desc')
     
             return res ? res : null
         }
@@ -129,10 +131,10 @@ module.exports = {
             return studentPerformanceByGame
         },
 
-        async getHitsByGameByStudent(_, args) {
-            const { userId } = args
-            const HitsByGameByStudent = await getHitsByGameByStudent(userId);
-            return HitsByGameByStudent
+        async getScoreByGameByStudent(_, args) {
+            const { profileId } = args
+            const scoreByGameByStudent = await getScoreByGameByStudent(profileId);
+            return scoreByGameByStudent
         },
 
     
