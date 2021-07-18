@@ -36,3 +36,9 @@ type scoreByGame {
     ModuleId: String
     Score: Int
 }
+
+type errorCountByGame {
+    ProfileId: String
+    ModuleId: String
+    TotalErrors: Int
+}
