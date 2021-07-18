@@ -93,7 +93,24 @@ const getNumberMovesByStudent = async () => {
                 ).sum({Score: 'Score'})
                 .where('ProfileId', profileId)
                 .groupBy('ProfileId', 'ModuleId')
-                .orderBy('Score', 'desc')
+                
+    
+            return res ? res : null
+        }
+        catch(err) {
+            console.log('ERRO:', err)
+        }
+    }
+
+    const getStudentPerformanceByGameByStudent = async (profileId) => {
+        try {
+            const res = await db('ActivityResults').select(
+                'ProfileId',
+                'ModuleId',
+                ).sum({TotalTime: 'TotalTime'})
+                .where('ProfileId', profileId)
+                .groupBy('ProfileId','ModuleId')
+                .orderBy('ProfileId', 'desc')
     
             return res ? res : null
         }
@@ -131,10 +148,17 @@ module.exports = {
             return studentPerformanceByGame
         },
 
+        // Bar Chart
         async getScoreByGameByStudent(_, args) {
             const { profileId } = args
             const scoreByGameByStudent = await getScoreByGameByStudent(profileId);
             return scoreByGameByStudent
+        },
+
+        async getStudentPerformanceByGameByStudent(_, args) {
+            const { profileId } = args
+            const studentPerformanceByGameByStudent = await getStudentPerformanceByGameByStudent(profileId);
+            return studentPerformanceByGameByStudent
         },
 
     

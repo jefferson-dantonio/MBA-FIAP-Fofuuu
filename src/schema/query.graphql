@@ -7,4 +7,5 @@ type Query {
     getHitsByGame: [hitsByGame]
     getStudentPerformanceByGame: [studentPerformanceByGame]
     getScoreByGameByStudent(profileId: String): [scoreByGame]
+    getStudentPerformanceByGameByStudent(profileId: String): [studentPerformanceByGame]
 } 
