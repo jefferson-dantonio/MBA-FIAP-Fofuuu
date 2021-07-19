@@ -6,8 +6,10 @@ type Query {
     getNumberMovesByStudent: [numberMovesByStudent]
     getHitsByGame: [hitsByGame]
     getStudentPerformanceByGame: [studentPerformanceByGame]
+    getErrorCountByGame: [errorCountByGame]
     getScoreByGameByStudent(profileId: String): [scoreByGame]
     getStudentPerformanceByGameByStudent(profileId: String): [studentPerformanceByGame]
     getErrorCountByGameByStudent(profileId: String): [errorCountByGame]
     getProfilesById(userId: String): [profilesById]
+    
 } 
