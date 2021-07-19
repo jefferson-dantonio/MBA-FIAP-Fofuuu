@@ -138,14 +138,15 @@ const getNumberMovesByStudent = async () => {
 
     const getProfilesById = async (userId) => {
         try {
-            const res = await db('ActivityResults').select(
-                'ProfileId',
-                'FirstName',
-                'LastName'
+            const res = await db('UserProfileConnections').select(
+                'UserProfileConnections.ProfileId',
+                'Profiles.FirstName',
+                'Profiles.LastName'
                 )
+                .innerJoin('Profiles', 'UserProfileConnections.ProfileId', 'Profiles.id' )
                 .where({
-                    "UserId": userId,
-                    'IsRevoked': False
+                    "UserProfileConnections.UserId": userId,
+                    'IsRevoked': 0
                 })
                 
 
