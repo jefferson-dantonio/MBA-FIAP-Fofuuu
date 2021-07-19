@@ -152,6 +152,26 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
+    // Queries by pathology
+
+    const getScoreByGameByPathology = async (pathology) => {
+        try {
+            const res = await db('ActivityResults').select(
+                'ActivityResults.ProfileId',
+                'ActivityResults.ModuleId',
+                ).sum({Score: 'Score'})
+                .innerJoin('Profiles', 'ActivityResults.ProfileId', 'Profiles.Id')
+                .where('Profiles.Pathology', pathology)
+                .groupBy('ActivityResults.ProfileId', 'ActivityResults.ModuleId')
+                
+    
+            return res ? res : null
+        }
+        catch(err) {
+            console.log('ERRO:', err)
+        }
+    }
+
     const getProfilesById = async (userId) => {
         try {
             const res = await db('UserProfileConnections').select(
@@ -159,7 +179,7 @@ const getNumberMovesByStudent = async () => {
                 'Profiles.FirstName',
                 'Profiles.LastName'
                 )
-                .innerJoin('Profiles', 'UserProfileConnections.ProfileId', 'Profiles.id' )
+                .innerJoin('Profiles', 'UserProfileConnections.ProfileId', 'Profiles.Id' )
                 .where({
                     "UserProfileConnections.UserId": userId,
                     'IsRevoked': 0
@@ -230,6 +250,14 @@ module.exports = {
             return  errorCountByGameByStudent
         },
 
+        // Bar Chart
+        async getScoreByGameByPathology(_, args) {
+            const { pathology } = args
+            const scoreByGameByPathology = await getScoreByGameByPathology(pathology);
+            return scoreByGameByPathology
+        },
+
+        
         async getProfilesById(_, args) {
             const {userId } = args
             const profilesById = await getProfilesById(userId);
