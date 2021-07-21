@@ -13,4 +13,5 @@ type Query {
     getProfilesById(userId: String): [profilesById]
     getScoreByGameByPathology(pathology: String): [scoreByGame]
     getErrorCountByGameByPathology(pathology: String): [errorCountByGame]
+    getStudentPerformanceByGameByPathology(pathology: String): [studentPerformanceByGame]
 } 
