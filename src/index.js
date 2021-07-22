@@ -3,6 +3,7 @@ const { loadSchemaSync } = require('@graphql-tools/load');
 const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
 const { addResolversToSchema } = require('@graphql-tools/schema');
 const { graphqlHTTP } = require('express-graphql');
+const cors = require('cors');
 const { join } = require('path');
 const resolvers = require('./resolvers')
 
@@ -19,6 +20,7 @@ const schemaWithResolvers = addResolversToSchema({
 
 const app = express();
 
+app.use(cors());
 app.use(
     graphqlHTTP({
         schema: schemaWithResolvers,
