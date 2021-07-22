@@ -44,15 +44,16 @@ const getNumberMovesByStudent = async () => {
             return res ? res : null
         }
         catch(err) {
-            console.log('ERRO:', err) 
+            console.log('ERRO:', err)  
         }
     }
 
-    const getScoreByGame = async () => {
+    const getScoreByGame = async (chapter) => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
                 ).avg({Score: 'Score'})
+                .where('ChapterId', chapter)
                 .groupBy('ModuleId')
                
     
@@ -63,11 +64,12 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
-    const getStudentPerformanceByGame = async () => {
+    const getStudentPerformanceByGame = async (chapter) => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
                 ).avg({TotalTime: 'TotalTime'})
+                .where('ChapterId', chapter)
                 .groupBy('ModuleId')
 
     
@@ -78,11 +80,12 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
-    const getErrorCountByGame = async () => {
+    const getErrorCountByGame = async (chapter) => {
         try {
             const res = await db('ActivityResults').select(
                 'ProfileId',
                 ).avg({TotalErrors: 'ErrorCount'})
+                .where('ChapterId', chapter)
                 .groupBy('ModuleId')
                
     
@@ -95,12 +98,15 @@ const getNumberMovesByStudent = async () => {
 
     // Queries by student
 
-    const getScoreByGameByStudent = async (profileId) => {
+    const getScoreByGameByStudent = async (profileId, chapter) => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
                 ).avg({Score: 'Score'})
-                .where('ProfileId', profileId)
+                .where({
+                    'ProfileId': profileId,
+                    'ChapterId': chapter
+                })
                 .groupBy('ModuleId')
                 
     
@@ -111,12 +117,15 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
-    const getStudentPerformanceByGameByStudent = async (profileId) => {
+    const getStudentPerformanceByGameByStudent = async (profileId, chapter) => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
                 ).avg({TotalTime: 'TotalTime'})
-                .where('ProfileId', profileId)
+                .where({
+                    'ProfileId': profileId,
+                    'ChapterId': chapter
+                })
                 .groupBy('ModuleId')
                 
     
@@ -127,12 +136,15 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
-    const getErrorCountByGameByStudent = async (profileId) => {
+    const getErrorCountByGameByStudent = async (profileId, chapter) => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
                 ).avg({TotalErrors: 'ErrorCount'})
-                .where('ProfileId', profileId)
+                .where({
+                    'ProfileId': profileId,
+                    'ChapterId': chapter
+                })
                 .groupBy('ModuleId')
                
     
@@ -148,7 +160,7 @@ const getNumberMovesByStudent = async () => {
     const getScoreByGameByPathology = async (pathology, chapter) => {
         try {
             const res = await db('ActivityResults')
-                .distinct('ActivityResults.ModuleId')
+                .select('ActivityResults.ModuleId')
                 .avg({Score: 'Score'})
                 .innerJoin('Profiles', 'ActivityResults.ProfileId', 'Profiles.Id')
                 .where({
@@ -165,13 +177,16 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
-    const getErrorCountByGameByPathology = async (pathology) => {
+    const getErrorCountByGameByPathology = async (pathology, chapter) => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
                 ).avg({TotalErrors: 'ErrorCount'})
                 .innerJoin('Profiles', 'ActivityResults.ProfileId', 'Profiles.Id')
-                .where('Profiles.Pathology', pathology)
+                .where({
+                    'Profiles.Pathology': pathology,
+                    'ActivityResults.ChapterId': chapter
+            })
                 .groupBy('ModuleId')
                
     
@@ -183,13 +198,16 @@ const getNumberMovesByStudent = async () => {
     }
 
 
-    const getStudentPerformanceByGameByPathology = async (pathology) => {
+    const getStudentPerformanceByGameByPathology = async (pathology, chapter) => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
                 ).avg({TotalTime: 'TotalTime'})
                 .innerJoin('Profiles', 'ActivityResults.ProfileId', 'Profiles.Id')
-                .where('Profiles.Pathology', pathology)
+                .where({
+                    'Profiles.Pathology': pathology,
+                    'ActivityResults.ChapterId': chapter
+            })
                 .groupBy('ModuleId')
                
     
@@ -239,41 +257,44 @@ module.exports = {
             return numberMovesByStudent
         },
 
-        async getscoreByGame(_, args) {
-            const scoreByGame = await getScoreByGame();
+        async getScoreByGame(_, args) {
+            const { chapter } = args
+            const scoreByGame = await getScoreByGame(chapter);
             return scoreByGame
         },
 
         // Bar Chart
         async getStudentPerformanceByGame(_, args) {
-            const studentPerformanceByGame = await getStudentPerformanceByGame();
+            const { chapter } = args
+            const studentPerformanceByGame = await getStudentPerformanceByGame(chapter);
             return studentPerformanceByGame
         },
 
         // Bar Chart
         async getErrorCountByGame(_, args) {
-            const errorCountByGame = await getErrorCountByGame();
+            const { chapter } = args
+            const errorCountByGame = await getErrorCountByGame(chapter);
             return  errorCountByGame
         },
 
         // Bar Chart
         async getScoreByGameByStudent(_, args) {
-            const { profileId } = args
-            const scoreByGameByStudent = await getScoreByGameByStudent(profileId);
+            const { profileId, chapter } = args
+            const scoreByGameByStudent = await getScoreByGameByStudent(profileId, chapter);
             return scoreByGameByStudent
         },
 
         // Bar Chart
         async getStudentPerformanceByGameByStudent(_, args) {
-            const { profileId } = args
-            const studentPerformanceByGameByStudent = await getStudentPerformanceByGameByStudent(profileId);
+            const { profileId, chapter } = args
+            const studentPerformanceByGameByStudent = await getStudentPerformanceByGameByStudent(profileId, chapter);
             return studentPerformanceByGameByStudent
         },
 
         // Bar Chart
         async getErrorCountByGameByStudent(_, args) {
-            const { profileId } = args
-            const errorCountByGameByStudent = await getErrorCountByGameByStudent(profileId);
+            const { profileId, chapter } = args
+            const errorCountByGameByStudent = await getErrorCountByGameByStudent(profileId, chapter);
             return  errorCountByGameByStudent
         },
 
@@ -286,21 +307,21 @@ module.exports = {
 
          // Bar Chart
          async getErrorCountByGameByPathology(_, args) {
-            const { pathology } = args
-            const errorCountByGameByPathology = await getErrorCountByGameByPathology(pathology);
+            const { pathology, chapter} = args
+            const errorCountByGameByPathology = await getErrorCountByGameByPathology(pathology, chapter);
             return errorCountByGameByPathology
         },
 
         // Bar Chart
         async getStudentPerformanceByGameByPathology(_, args) {
-            const { pathology } = args
-            const studentPerformanceByGameByPathology = await getStudentPerformanceByGameByPathology(pathology);
+            const { pathology, chapter} = args
+            const studentPerformanceByGameByPathology = await getStudentPerformanceByGameByPathology(pathology, chapter);
             return studentPerformanceByGameByPathology
         },
 
         
         async getProfilesById(_, args) {
-            const {userId } = args
+            const { userId } = args
             const profilesById = await getProfilesById(userId);
             return  profilesById
         },
