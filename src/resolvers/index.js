@@ -3,14 +3,13 @@ const db = require('../db')
 const getAttendanceMonitoring = async () => {
     try {
         const res = await db('DailyUserEvents').select(
-            'UserId',
             'EventName',
             'Year',
             'Month',
             'DAY'
             ).count('*', { as: 'AcompPresenca'})
-            .groupBy('UserId', 'EventName', 'Year', 'Month', 'DAY')
-            .orderBy('UserId', 'Year', 'Month', 'DAY')
+            .groupBy('EventName', 'Year', 'Month', 'DAY')
+            .orderBy('Year', 'Month', 'DAY')
 
         return res ? res : null
     }
@@ -22,10 +21,9 @@ const getAttendanceMonitoring = async () => {
 const getUserPerformanceByGame = async () => {
     try {
         const res = await db('[MonthlyActivityResults]').select(
-        'UserId',
-	    'ModuleId',
+        'ModuleId',
 	    ).sum({TotalScore: 'TotalScore'})
-        .groupBy('UserId', 'ModuleId')
+        .groupBy('ModuleId')
         .orderBy('TotalScore', 'desc')
 
         return res ? res : null
@@ -38,27 +36,25 @@ const getUserPerformanceByGame = async () => {
 const getNumberMovesByStudent = async () => {
         try {
             const res = await db('DailyActivityResults').select(
-                'UserId',
                 'ModuleId',
                 ).count('*', { as: 'NumberOfMoves'})
-                .groupBy('UserId', 'ModuleId')
+                .groupBy('ModuleId')
                 .orderBy('NumberOfMoves', 'desc')
     
             return res ? res : null
         }
         catch(err) {
-            console.log('ERRO:', err)
+            console.log('ERRO:', err) 
         }
     }
 
-    const getHitsByGame = async () => {
+    const getScoreByGame = async () => {
         try {
             const res = await db('ActivityResults').select(
-                'UserId',
-                'ActivityId',
-                ).sum({Hits: 'Score'})
-                .groupBy('UserId', 'ActivityId')
-                .orderBy('Hits', 'desc')
+                'ModuleId',
+                ).sum({Score: 'Score'})
+                .groupBy('ModuleId')
+               
     
             return res ? res : null
         }
@@ -70,11 +66,10 @@ const getNumberMovesByStudent = async () => {
     const getStudentPerformanceByGame = async () => {
         try {
             const res = await db('ActivityResults').select(
-                'ProfileId',
                 'ModuleId',
                 ).sum({TotalTime: 'TotalTime'})
-                .groupBy('ProfileId','ModuleId')
-                .orderBy('ProfileId', 'desc')
+                .groupBy('ModuleId')
+
     
             return res ? res : null
         }
@@ -87,9 +82,8 @@ const getNumberMovesByStudent = async () => {
         try {
             const res = await db('ActivityResults').select(
                 'ProfileId',
-                'ModuleId',
                 ).sum({TotalErrors: 'ErrorCount'})
-                .groupBy('ProfileId','ModuleId')
+                .groupBy('ModuleId')
                
     
             return res ? res : null
@@ -104,11 +98,10 @@ const getNumberMovesByStudent = async () => {
     const getScoreByGameByStudent = async (profileId) => {
         try {
             const res = await db('ActivityResults').select(
-                'ProfileId',
                 'ModuleId',
                 ).sum({Score: 'Score'})
                 .where('ProfileId', profileId)
-                .groupBy('ProfileId', 'ModuleId')
+                .groupBy('ModuleId')
                 
     
             return res ? res : null
@@ -121,12 +114,11 @@ const getNumberMovesByStudent = async () => {
     const getStudentPerformanceByGameByStudent = async (profileId) => {
         try {
             const res = await db('ActivityResults').select(
-                'ProfileId',
                 'ModuleId',
                 ).sum({TotalTime: 'TotalTime'})
                 .where('ProfileId', profileId)
-                .groupBy('ProfileId','ModuleId')
-                .orderBy('ProfileId', 'desc')
+                .groupBy('ModuleId')
+                
     
             return res ? res : null
         }
@@ -138,11 +130,10 @@ const getNumberMovesByStudent = async () => {
     const getErrorCountByGameByStudent = async (profileId) => {
         try {
             const res = await db('ActivityResults').select(
-                'ProfileId',
                 'ModuleId',
                 ).sum({TotalErrors: 'ErrorCount'})
                 .where('ProfileId', profileId)
-                .groupBy('ProfileId','ModuleId')
+                .groupBy('ModuleId')
                
     
             return res ? res : null
@@ -177,12 +168,11 @@ const getNumberMovesByStudent = async () => {
     const getErrorCountByGameByPathology = async (pathology) => {
         try {
             const res = await db('ActivityResults').select(
-                'ProfileId',
                 'ModuleId',
                 ).sum({TotalErrors: 'ErrorCount'})
                 .innerJoin('Profiles', 'ActivityResults.ProfileId', 'Profiles.Id')
                 .where('Profiles.Pathology', pathology)
-                .groupBy('ProfileId','ModuleId')
+                .groupBy('ModuleId')
                
     
             return res ? res : null
@@ -196,13 +186,12 @@ const getNumberMovesByStudent = async () => {
     const getStudentPerformanceByGameByPathology = async (pathology) => {
         try {
             const res = await db('ActivityResults').select(
-                'ProfileId',
                 'ModuleId',
                 ).sum({TotalTime: 'TotalTime'})
                 .innerJoin('Profiles', 'ActivityResults.ProfileId', 'Profiles.Id')
                 .where('Profiles.Pathology', pathology)
-                .groupBy('ProfileId','ModuleId')
-                .orderBy('ProfileId', 'desc')
+                .groupBy('ModuleId')
+               
     
             return res ? res : null
         }
@@ -214,7 +203,6 @@ const getNumberMovesByStudent = async () => {
     const getProfilesById = async (userId) => {
         try {
             const res = await db('UserProfileConnections').select(
-                'UserProfileConnections.ProfileId',
                 'Profiles.FirstName',
                 'Profiles.LastName'
                 )
@@ -251,9 +239,9 @@ module.exports = {
             return numberMovesByStudent
         },
 
-        async getHitsByGame(_, args) {
-            const hitsByGame = await getHitsByGame();
-            return hitsByGame
+        async getscoreByGame(_, args) {
+            const scoreByGame = await getScoreByGame();
+            return scoreByGame
         },
 
         // Bar Chart

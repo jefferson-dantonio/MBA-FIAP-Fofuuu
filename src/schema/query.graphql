@@ -1,10 +1,10 @@
-#import AttendanceMonitoring, UserPerformanceByGame, numberMovesByStudent, hitsByGame, studentPerformanceByGame, scoreByGame, errorCountByGame, profilesById from 'user.graphql'
+#import AttendanceMonitoring, UserPerformanceByGame, numberMovesByStudent, studentPerformanceByGame, scoreByGame, errorCountByGame, profilesById from 'user.graphql'
 
 type Query {
     getAttendanceMonitoring: [AttendanceMonitoring]
     getUserPerformanceByGame: [UserPerformanceByGame]
     getNumberMovesByStudent: [numberMovesByStudent]
-    getHitsByGame: [hitsByGame]
+    getscoreByGame: [scoreByGame]
     getStudentPerformanceByGame: [studentPerformanceByGame]
     getErrorCountByGame: [errorCountByGame]
     getScoreByGameByStudent(profileId: String): [scoreByGame]

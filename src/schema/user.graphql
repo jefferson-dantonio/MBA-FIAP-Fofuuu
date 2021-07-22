@@ -1,5 +1,4 @@
 type AttendanceMonitoring {
-    UserId: String
     EventName: String
     Year: Int
     Month: Int
@@ -8,43 +7,32 @@ type AttendanceMonitoring {
 }
 
 type UserPerformanceByGame {
-    UserId: String
     ModuleId: String
     TotalScore: Int
 } 
 
 type numberMovesByStudent {
-    UserId: String
     ModuleId: String
     NumberOfMoves: Int
 } 
 
-type hitsByGame {
-    UserId: String
-    ActivityId: String
-    Hits: Int
-} 
 
 type studentPerformanceByGame {
-    ProfileId: String
     ModuleId: String
     TotalTime: Int
 }
 
 type scoreByGame {
-    ProfileId: String
     ModuleId: String
     Score: Int
 }
 
 type errorCountByGame {
-    ProfileId: String
     ModuleId: String
     TotalErrors: Int
 }
 
 type profilesById {
-    ProfileId: String
     FirstName: String
     LastName: String
 }
