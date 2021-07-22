@@ -6,7 +6,8 @@ module.exports = {
             user: process.env.APP_DB_USER,
             password: process.env.APP_DB_PASSWORD,
             server: process.env.APP_DB_HOST,
-            option:{
+            options: {
+                port: 1433,
                 encrypt: true
             }
         },
