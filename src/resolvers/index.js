@@ -156,9 +156,7 @@ const getNumberMovesByStudent = async () => {
 
     const getScoreByGameByPathology = async (pathology, chapter) => {
         try {
-            const res = await db('ActivityResults').select(
-                'ActivityResults.ProfileId',
-                )
+            const res = await db('ActivityResults')
                 .distinct('ActivityResults.ModuleId')
                 .avg({Score: 'Score'})
                 .innerJoin('Profiles', 'ActivityResults.ProfileId', 'Profiles.Id')
@@ -166,7 +164,7 @@ const getNumberMovesByStudent = async () => {
                     'Profiles.Pathology': pathology,
                     'ActivityResults.ChapterId': chapter
             })
-                .groupBy('ActivityResults.ProfileId', 'ActivityResults.ModuleId')
+                .groupBy('ActivityResults.ModuleId')
                 
     
             return res ? res : null
