@@ -28,6 +28,6 @@ app.use(
     })
 );
 
-app.listen(4000, () => {
+app.listen(process.env.PORT || 4000, () => {
     console.info(`Server listening on http://localhost:4000`)
 })

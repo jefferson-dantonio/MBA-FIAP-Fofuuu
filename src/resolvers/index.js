@@ -172,6 +172,43 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
+    const getErrorCountByGameByPathology = async (pathology) => {
+        try {
+            const res = await db('ActivityResults').select(
+                'ProfileId',
+                'ModuleId',
+                ).sum({TotalErrors: 'ErrorCount'})
+                .innerJoin('Profiles', 'ActivityResults.ProfileId', 'Profiles.Id')
+                .where('Profiles.Pathology', pathology)
+                .groupBy('ProfileId','ModuleId')
+               
+    
+            return res ? res : null
+        }
+        catch(err) {
+            console.log('ERRO:', err)
+        }
+    }
+
+
+    const getStudentPerformanceByGameByPathology = async (pathology) => {
+        try {
+            const res = await db('ActivityResults').select(
+                'ProfileId',
+                'ModuleId',
+                ).sum({TotalTime: 'TotalTime'})
+                .innerJoin('Profiles', 'ActivityResults.ProfileId', 'Profiles.Id')
+                .where('Profiles.Pathology', pathology)
+                .groupBy('ProfileId','ModuleId')
+                .orderBy('ProfileId', 'desc')
+    
+            return res ? res : null
+        }
+        catch(err) {
+            console.log('ERRO:', err)
+        }
+    }
+
     const getProfilesById = async (userId) => {
         try {
             const res = await db('UserProfileConnections').select(
@@ -255,6 +292,20 @@ module.exports = {
             const { pathology } = args
             const scoreByGameByPathology = await getScoreByGameByPathology(pathology);
             return scoreByGameByPathology
+        },
+
+         // Bar Chart
+         async getErrorCountByGameByPathology(_, args) {
+            const { pathology } = args
+            const errorCountByGameByPathology = await getErrorCountByGameByPathology(pathology);
+            return errorCountByGameByPathology
+        },
+
+        // Bar Chart
+        async getStudentPerformanceByGameByPathology(_, args) {
+            const { pathology } = args
+            const studentPerformanceByGameByPathology = await getStudentPerformanceByGameByPathology(pathology);
+            return studentPerformanceByGameByPathology
         },
 
         
