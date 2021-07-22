@@ -154,14 +154,17 @@ const getNumberMovesByStudent = async () => {
 
     // Queries by pathology
 
-    const getScoreByGameByPathology = async (pathology) => {
+    const getScoreByGameByPathology = async (pathology, chapter) => {
         try {
             const res = await db('ActivityResults').select(
                 'ActivityResults.ProfileId',
                 'ActivityResults.ModuleId',
                 ).sum({Score: 'Score'})
                 .innerJoin('Profiles', 'ActivityResults.ProfileId', 'Profiles.Id')
-                .where('Profiles.Pathology', pathology)
+                .where({
+                    'Profiles.Pathology': pathology,
+                    'ActivityResults.ChapterId': chapter
+            })
                 .groupBy('ActivityResults.ProfileId', 'ActivityResults.ModuleId')
                 
     
@@ -289,8 +292,8 @@ module.exports = {
 
         // Bar Chart
         async getScoreByGameByPathology(_, args) {
-            const { pathology } = args
-            const scoreByGameByPathology = await getScoreByGameByPathology(pathology);
+            const { pathology, chapter} = args
+            const scoreByGameByPathology = await getScoreByGameByPathology(pathology, chapter);
             return scoreByGameByPathology
         },
 
