@@ -158,8 +158,9 @@ const getNumberMovesByStudent = async () => {
         try {
             const res = await db('ActivityResults').select(
                 'ActivityResults.ProfileId',
-                'ActivityResults.ModuleId',
-                ).sum({Score: 'Score'})
+                )
+                .distict('ActivityResults.ModuleId')
+                .avg({Score: 'Score'})
                 .innerJoin('Profiles', 'ActivityResults.ProfileId', 'Profiles.Id')
                 .where({
                     'Profiles.Pathology': pathology,
