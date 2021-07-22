@@ -22,7 +22,7 @@ const getUserPerformanceByGame = async () => {
     try {
         const res = await db('[MonthlyActivityResults]').select(
         'ModuleId',
-	    ).sum({TotalScore: 'TotalScore'})
+	    ).avg({TotalScore: 'TotalScore'})
         .groupBy('ModuleId')
         .orderBy('TotalScore', 'desc')
 
@@ -52,7 +52,7 @@ const getNumberMovesByStudent = async () => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
-                ).sum({Score: 'Score'})
+                ).avg({Score: 'Score'})
                 .groupBy('ModuleId')
                
     
@@ -67,7 +67,7 @@ const getNumberMovesByStudent = async () => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
-                ).sum({TotalTime: 'TotalTime'})
+                ).avg({TotalTime: 'TotalTime'})
                 .groupBy('ModuleId')
 
     
@@ -82,7 +82,7 @@ const getNumberMovesByStudent = async () => {
         try {
             const res = await db('ActivityResults').select(
                 'ProfileId',
-                ).sum({TotalErrors: 'ErrorCount'})
+                ).avg({TotalErrors: 'ErrorCount'})
                 .groupBy('ModuleId')
                
     
@@ -99,7 +99,7 @@ const getNumberMovesByStudent = async () => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
-                ).sum({Score: 'Score'})
+                ).avg({Score: 'Score'})
                 .where('ProfileId', profileId)
                 .groupBy('ModuleId')
                 
@@ -115,7 +115,7 @@ const getNumberMovesByStudent = async () => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
-                ).sum({TotalTime: 'TotalTime'})
+                ).avg({TotalTime: 'TotalTime'})
                 .where('ProfileId', profileId)
                 .groupBy('ModuleId')
                 
@@ -131,7 +131,7 @@ const getNumberMovesByStudent = async () => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
-                ).sum({TotalErrors: 'ErrorCount'})
+                ).avg({TotalErrors: 'ErrorCount'})
                 .where('ProfileId', profileId)
                 .groupBy('ModuleId')
                
@@ -169,7 +169,7 @@ const getNumberMovesByStudent = async () => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
-                ).sum({TotalErrors: 'ErrorCount'})
+                ).avg({TotalErrors: 'ErrorCount'})
                 .innerJoin('Profiles', 'ActivityResults.ProfileId', 'Profiles.Id')
                 .where('Profiles.Pathology', pathology)
                 .groupBy('ModuleId')
@@ -187,7 +187,7 @@ const getNumberMovesByStudent = async () => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
-                ).sum({TotalTime: 'TotalTime'})
+                ).avg({TotalTime: 'TotalTime'})
                 .innerJoin('Profiles', 'ActivityResults.ProfileId', 'Profiles.Id')
                 .where('Profiles.Pathology', pathology)
                 .groupBy('ModuleId')
