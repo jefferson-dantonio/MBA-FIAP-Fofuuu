@@ -100,7 +100,7 @@ const getNumberMovesByStudent = async () => {
 
     // Queries by student
 
-    const getScoreByGameByStudent = async (profileId, chapter) => {
+    const getScoreByGameByStudent = async (chapter, profileId) => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
@@ -119,7 +119,7 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
-    const getStudentPerformanceByGameByStudent = async (profileId, chapter) => {
+    const getStudentPerformanceByGameByStudent = async (chapter, profileId) => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
@@ -138,7 +138,7 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
-    const getErrorCountByGameByStudent = async (profileId, chapter) => {
+    const getErrorCountByGameByStudent = async (chapter, profileId) => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
@@ -159,7 +159,7 @@ const getNumberMovesByStudent = async () => {
 
     // Queries by pathology
 
-    const getScoreByGameByPathology = async (pathology, chapter) => {
+    const getScoreByGameByPathology = async (chapter, pathology) => {
         try {
             const res = await db('ActivityResults')
                 .select('ActivityResults.ModuleId')
@@ -179,7 +179,7 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
-    const getErrorCountByGameByPathology = async (pathology, chapter) => {
+    const getErrorCountByGameByPathology = async (chapter, pathology) => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
@@ -200,7 +200,7 @@ const getNumberMovesByStudent = async () => {
     }
 
 
-    const getStudentPerformanceByGameByPathology = async (pathology, chapter) => {
+    const getStudentPerformanceByGameByPathology = async (chapter, pathology) => {
         try {
             const res = await db('ActivityResults').select(
                 'ModuleId',
@@ -283,68 +283,68 @@ module.exports = {
             const numberMovesByStudent = await getNumberMovesByStudent();
             return numberMovesByStudent
         },
-
+        // Bar Chart
         async getScoreByGame(_, args) {
-            const { chapter } = args
-            const scoreByGame = await getScoreByGame(chapter);
-            return scoreByGame
+            const { chapter, profileId, pathology } = args;
+            let scoreByGame = null;
+
+            if(chapter){
+
+                if(profileId){
+                    scoreByGame = await getScoreByGameByStudent(chapter, profileId);
+                    return scoreByGame;
+                }
+                if(pathology){
+                    scoreByGame = await getScoreByGameByPathology(chapter, pathology);
+                    return scoreByGame;
+                }
+                
+                scoreByGame = await getScoreByGame(chapter);
+            }
+
+            return scoreByGame;
         },
 
         // Bar Chart
         async getStudentPerformanceByGame(_, args) {
-            const { chapter } = args
-            const studentPerformanceByGame = await getStudentPerformanceByGame(chapter);
-            return studentPerformanceByGame
+            const { chapter, profileId, pathology } = args;
+            let studentPerformanceByGame = null;
+
+            if(chapter){
+
+                if(profileId){
+                    studentPerformanceByGame = await getStudentPerformanceByGameByStudent(chapter, profileId);
+                    return studentPerformanceByGame;
+                }
+                if(pathology){
+                    studentPerformanceByGame = await getStudentPerformanceByGameByPathology(chapter, pathology);
+                    return studentPerformanceByGame;
+                }
+                studentPerformanceByGame = await getStudentPerformanceByGame(chapter);   
+            }
+            return studentPerformanceByGame;
         },
+
 
         // Bar Chart
         async getErrorCountByGame(_, args) {
-            const { chapter } = args
-            const errorCountByGame = await getErrorCountByGame(chapter);
-            return  errorCountByGame
-        },
+            const { chapter, profileId, pathology } = args;
+            let errorCountByGame = null; 
 
-        // Bar Chart
-        async getScoreByGameByStudent(_, args) {
-            const { profileId, chapter } = args
-            const scoreByGameByStudent = await getScoreByGameByStudent(profileId, chapter);
-            return scoreByGameByStudent
-        },
-
-        // Bar Chart
-        async getStudentPerformanceByGameByStudent(_, args) {
-            const { profileId, chapter } = args
-            const studentPerformanceByGameByStudent = await getStudentPerformanceByGameByStudent(profileId, chapter);
-            return studentPerformanceByGameByStudent
-        },
-
-        // Bar Chart
-        async getErrorCountByGameByStudent(_, args) {
-            const { profileId, chapter } = args
-            const errorCountByGameByStudent = await getErrorCountByGameByStudent(profileId, chapter);
-            return  errorCountByGameByStudent
-        },
-
-        // Bar Chart
-        async getScoreByGameByPathology(_, args) {
-            const { pathology, chapter} = args
-            const scoreByGameByPathology = await getScoreByGameByPathology(pathology, chapter);
-            return scoreByGameByPathology
-        },
-
-         // Bar Chart
-         async getErrorCountByGameByPathology(_, args) {
-            const { pathology, chapter} = args
-            const errorCountByGameByPathology = await getErrorCountByGameByPathology(pathology, chapter);
-            return errorCountByGameByPathology
-        },
-
-        // Bar Chart
-        async getStudentPerformanceByGameByPathology(_, args) {
-            const { pathology, chapter} = args
-            const studentPerformanceByGameByPathology = await getStudentPerformanceByGameByPathology(pathology, chapter);
-            return studentPerformanceByGameByPathology
-        },
+            if(chapter){
+            if(profileId){
+                errorCountByGame = await getErrorCountByGameByStudent(chapter, profileId);
+                return  errorCountByGame;
+            }
+            else if(pathology){
+                errorCountByGame = await getErrorCountByGameByPathology(chapter, pathology);
+                return  errorCountByGame;
+            }
+            errorCountByGame = await getErrorCountByGame(chapter); 
+           }
+           
+            return  errorCountByGame;
+        }, 
 
         
         async getProfilesById(_, args) {
@@ -353,12 +353,7 @@ module.exports = {
             return  profilesById
         },
 
-        async getProfilesById(_, args) {
-            const { userId } = args
-            const profilesById = await getProfilesById(userId);
-            return  profilesById
-        },
-
+    
         async getPathology(_, args) {
             const pathology = await getPathology();
             return  pathology
