@@ -36,3 +36,7 @@ type profilesById {
     FirstName: String
     LastName: String
 }
+
+type pathology {
+    Description: String
+}

@@ -48,6 +48,8 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
+    //global
+
     const getScoreByGame = async (chapter) => {
         try {
             const res = await db('ActivityResults').select(
@@ -238,6 +240,18 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
+    const getPathology = async () => {
+        try {
+            const res = await db('Pathologies').select(
+                'Description', 
+            )
+                return res ? res : null
+        }
+        catch(err) {
+            console.log('ERRO:', err)
+        }
+    }
+
     
 
 
@@ -324,6 +338,17 @@ module.exports = {
             const { userId } = args
             const profilesById = await getProfilesById(userId);
             return  profilesById
+        },
+
+        async getProfilesById(_, args) {
+            const { userId } = args
+            const profilesById = await getProfilesById(userId);
+            return  profilesById
+        },
+
+        async getPathology(_, args) {
+            const pathology = await getPathology();
+            return  pathology
         },
 
     
