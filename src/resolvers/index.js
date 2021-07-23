@@ -85,7 +85,7 @@ const getNumberMovesByStudent = async () => {
     const getErrorCountByGame = async (chapter) => {
         try {
             const res = await db('ActivityResults').select(
-                'ProfileId',
+                'ModuleId',
                 ).avg({TotalErrors: 'ErrorCount'})
                 .where('ChapterId', chapter)
                 .groupBy('ModuleId')
