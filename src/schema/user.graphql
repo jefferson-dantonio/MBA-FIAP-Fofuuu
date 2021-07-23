@@ -40,3 +40,8 @@ type profilesById {
 type pathology {
     Description: String
 }
+
+type chapter {
+    Description: String
+}
+

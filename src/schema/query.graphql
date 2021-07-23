@@ -1,4 +1,4 @@
-#import AttendanceMonitoring, UserPerformanceByGame, numberMovesByStudent, studentPerformanceByGame, scoreByGame, errorCountByGame, profilesById, pathology from 'user.graphql'
+#import AttendanceMonitoring, UserPerformanceByGame, numberMovesByStudent, studentPerformanceByGame, scoreByGame, errorCountByGame, profilesById, pathology, chapter from 'user.graphql'
 
 type Query {
     getAttendanceMonitoring: [AttendanceMonitoring]
@@ -15,4 +15,5 @@ type Query {
     getErrorCountByGameByPathology(pathology: String): [errorCountByGame]
     getStudentPerformanceByGameByPathology(pathology: String): [studentPerformanceByGame]
     getPathology: [pathology]
+    getChapter: [chapter]
 } 

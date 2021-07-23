@@ -252,6 +252,19 @@ const getNumberMovesByStudent = async () => {
         }
     }
 
+
+    const getChapter = async () => {
+        try {
+            const res = await db('Chapters').select(
+                'Description', 
+            )
+                return res ? res : null
+        }
+        catch(err) {
+            console.log('ERRO:', err)
+        }
+    }
+
     
 
 
@@ -349,6 +362,11 @@ module.exports = {
         async getPathology(_, args) {
             const pathology = await getPathology();
             return  pathology
+        },
+
+        async getChapter(_, args) {
+            const chapter = await getChapter();
+            return  chapter
         },
 
     
